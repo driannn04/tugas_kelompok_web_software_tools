@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import { toast } from "../components/Toast";
 import "./AuthPage.css";
 
 export default function LoginPage() {
@@ -19,7 +19,7 @@ export default function LoginPage() {
     setTimeout(() => {
       const result = login(form.username.trim(), form.password);
       if (result.success) {
-        toast.success("Login berhasil! Selamat datang 🎉");
+        toast.success("Login berhasil! Selamat datang");
         navigate("/");
       } else {
         toast.error(result.message);

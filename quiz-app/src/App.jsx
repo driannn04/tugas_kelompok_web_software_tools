@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import { ToastContainer } from "./components/Toast";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import QuizPage from "./pages/QuizPage";
 import ResultPage from "./pages/ResultPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
-import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 
 function AppRoutes() {
@@ -36,22 +36,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Toaster
-          position="top-center"
-          containerStyle={{ zIndex: 99999 }}
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: "#1e1e2e",
-              color: "#cdd6f4",
-              border: "1px solid #45475a",
-              borderRadius: "12px",
-              fontSize: "14px",
-            },
-            success: { iconTheme: { primary: "#a6e3a1", secondary: "#1e1e2e" } },
-            error: { iconTheme: { primary: "#f38ba8", secondary: "#1e1e2e" } },
-          }}
-        />
+        <ToastContainer />
         <AppRoutes />
       </BrowserRouter>
     </AuthProvider>

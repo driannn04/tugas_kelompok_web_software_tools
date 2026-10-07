@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import { toast } from "../components/Toast";
 import "./AuthPage.css";
 
 export default function RegisterPage() {
@@ -23,7 +23,7 @@ export default function RegisterPage() {
     setTimeout(() => {
       const result = register(form.username.trim(), form.password);
       if (result.success) {
-        toast.success("Akun berhasil dibuat! Silakan login 🎉");
+        toast.success("Akun berhasil dibuat! Silakan login");
         setTimeout(() => navigate("/login"), 1500);
       } else {
         toast.error(result.message);

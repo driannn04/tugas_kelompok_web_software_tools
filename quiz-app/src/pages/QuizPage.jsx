@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { questions, categoryInfo } from "../data/questions";
 import { motion, AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
+import { toast } from "../components/Toast";
 import "./QuizPage.css";
 
 const TIMER_SECONDS = 15;
@@ -41,7 +41,7 @@ export default function QuizPage({ currentUser }) {
     if (isRevealed) return;
     if (timer === 0) {
       setIsRevealed(true);
-      toast("Waktu habis! ⏱️", { icon: "⏰" });
+      toast.show("Waktu habis!", "⏰");
       setTimeout(() => goNext(null), 1200);
       return;
     }
@@ -55,7 +55,7 @@ export default function QuizPage({ currentUser }) {
     setSelected(option);
     setIsRevealed(true);
     if (isCorrect) {
-      toast.success("Benar! 🎉");
+      toast.success("Jawaban Benar!");
     } else {
       toast.error("Salah! Jawaban: " + quizQuestions[current].answer);
     }
