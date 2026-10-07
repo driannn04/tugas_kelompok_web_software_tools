@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import "./AuthPage.css";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ username: "", password: "", confirm: "" });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -15,28 +15,38 @@ export default function RegisterPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(""); setSuccess("");
-    if (form.password !== form.confirm) { setError("Password tidak cocok!"); return; }
+    if (form.password !== form.confirm) {
+      toast.error("Password tidak cocok!");
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
       const result = register(form.username.trim(), form.password);
       if (result.success) {
-        setSuccess("Akun berhasil dibuat! Redirecting...");
+        toast.success("Akun berhasil dibuat! Silakan login 🎉");
         setTimeout(() => navigate("/login"), 1500);
-      } else setError(result.message);
+      } else {
+        toast.error(result.message);
+      }
       setLoading(false);
     }, 600);
   };
 
   return (
-    <div className="auth-wrapper">
+    <motion.div
+      className="auth-wrapper"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.35 }}
+    >
       <div className="auth-bg">
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
       </div>
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-icon">✨</div>
+          <div className="auth-icon">📝</div>
           <h1>Buat Akun Baru</h1>
           <p>Daftar dan bergabung dengan QuizMaster</p>
         </div>
@@ -53,8 +63,6 @@ export default function RegisterPage() {
             <label>Konfirmasi Password</label>
             <input type="password" name="confirm" placeholder="Ulangi password" value={form.confirm} onChange={handleChange} required />
           </div>
-          {error && <div className="auth-error">⚠️ {error}</div>}
-          {success && <div className="auth-success">✅ {success}</div>}
           <button type="submit" className="btn-auth" disabled={loading}>
             {loading ? <span className="spinner"></span> : "Daftar Sekarang"}
           </button>
@@ -63,6 +71,6 @@ export default function RegisterPage() {
           Sudah punya akun? <Link to="/login">Login di sini</Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
