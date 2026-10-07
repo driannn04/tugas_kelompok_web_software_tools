@@ -37,7 +37,8 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Toaster
-          position="top-right"
+          position="top-center"
+          containerStyle={{ zIndex: 99999 }}
           toastOptions={{
             duration: 3000,
             style: {

@@ -1,4 +1,4 @@
-.auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
 .auth-bg { position: fixed; inset: 0; pointer-events: none; }
 .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25; animation: float 8s ease-in-out infinite; }
 .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #6366f1, #a855f7); top: -100px; left: -100px; }
