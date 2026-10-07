@@ -16,8 +16,10 @@ export default function QuizPage({ currentUser }) {
   const [answers, setAnswers] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
 
-  const goNext = useCallback(() => {
-    const newAnswers = [...answers, { question: quizQuestions[current], selected }];
+  // selectedOverride: nilai pilihan yang dikirim langsung (hindari stale closure)
+  const goNext = useCallback((selectedOverride) => {
+    const actualSelected = selectedOverride !== undefined ? selectedOverride : null;
+    const newAnswers = [...answers, { question: quizQuestions[current], selected: actualSelected }];
     if (current + 1 >= quizQuestions.length) {
       const score = newAnswers.filter(a => a.selected === a.question.answer).length;
       const lb = JSON.parse(localStorage.getItem("quiz_lb_" + category) || "[]");
@@ -32,11 +34,11 @@ export default function QuizPage({ currentUser }) {
       setIsRevealed(false);
       setTimer(TIMER_SECONDS);
     }
-  }, [answers, current, selected, quizQuestions, navigate, category, currentUser]);
+  }, [answers, current, quizQuestions, navigate, category, currentUser]);
 
   useEffect(() => {
     if (isRevealed) return;
-    if (timer === 0) { setIsRevealed(true); setTimeout(goNext, 1200); return; }
+    if (timer === 0) { setIsRevealed(true); setTimeout(() => goNext(null), 1200); return; }
     const t = setTimeout(() => setTimer(t => t - 1), 1000);
     return () => clearTimeout(t);
   }, [timer, isRevealed, goNext]);
@@ -45,7 +47,8 @@ export default function QuizPage({ currentUser }) {
     if (isRevealed) return;
     setSelected(option);
     setIsRevealed(true);
-    setTimeout(goNext, 1200);
+    // Kirim option langsung ke goNext agar tidak terjadi stale closure
+    setTimeout(() => goNext(option), 1200);
   };
 
   if (!catInfo || quizQuestions.length === 0) return <div className="quiz-error">Kategori tidak ditemukan!</div>;
